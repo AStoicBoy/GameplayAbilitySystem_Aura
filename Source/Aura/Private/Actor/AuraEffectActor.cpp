@@ -2,9 +2,6 @@
 
 #include "Actor/AuraEffectActor.h"
 
-#include "Components/SphereComponent.h"
-#include "AbilitySystemInterface.h"
-#include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "ActiveGameplayEffectHandle.h"
 #include "AbilitySystemComponent.h"
@@ -43,24 +40,41 @@ void AAuraEffectActor::ApplyEffectToTarget(AActor* Target, TSubclassOf<UGameplay
 }
 
 void AAuraEffectActor::OnOverlap(AActor* TargetActor)
-{
-	if (ArrayGameplayEffectClass.Num() == 0) return;
-	
-	for (TSubclassOf<UGameplayEffect> EffectClass : ArrayGameplayEffectClass)
+{;
+	if (InstantArrayGameplayEffectClass.Num() != 0)
 	{
-		if (!IsValid(EffectClass)) return;
+		for (TSubclassOf<UGameplayEffect> EffectClass : InstantArrayGameplayEffectClass)
+		{
+			if (!IsValid(EffectClass)) return;
 		
-		if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
+			if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
+			{
+				ApplyEffectToTarget(TargetActor, EffectClass);	
+			}
+		}	
+	}
+	if (HasDurationArrayGameplayEffectClass.Num() != 0)
+	{
+		for (TSubclassOf<UGameplayEffect> EffectClass : HasDurationArrayGameplayEffectClass)
 		{
-			ApplyEffectToTarget(TargetActor, EffectClass);	
+			if (!IsValid(EffectClass)) return;
+		
+			if (HasDurationEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
+			{
+				ApplyEffectToTarget(TargetActor, EffectClass);	
+			}
 		}
-		if (IsValid(HasDurationGameplayEffectClass))
+	}
+	if (InfiniteArrayGameplayEffectClass.Num() != 0)
+	{
+		for (TSubclassOf<UGameplayEffect> EffectClass : InfiniteArrayGameplayEffectClass)
 		{
-			ApplyEffectToTarget(TargetActor, EffectClass);
-		}
-		if (IsValid(InfiniteGameplayEffectClass))
-		{
-			ApplyEffectToTarget(TargetActor, EffectClass);
+			if (!IsValid(EffectClass)) return;
+			
+			if (InfiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap)
+			{
+				ApplyEffectToTarget(TargetActor, EffectClass);
+			}
 		}
 
 	}
@@ -68,21 +82,40 @@ void AAuraEffectActor::OnOverlap(AActor* TargetActor)
 
 void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
 {
-
-	for (TSubclassOf<UGameplayEffect> EffectClass : ArrayGameplayEffectClass)
+	if (InstantArrayGameplayEffectClass.Num() != 0)
 	{
-	if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
-	{
-		ApplyEffectToTarget(TargetActor, EffectClass);
-	}	
-	if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
-	{
-		ApplyEffectToTarget(TargetActor, EffectClass);
+			for (TSubclassOf<UGameplayEffect> EffectClass : InstantArrayGameplayEffectClass)
+        	{
+				if (!IsValid(EffectClass)) return;
+        		if (InstantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
+        		{
+        			ApplyEffectToTarget(TargetActor, EffectClass);
+        		}
+        	}
 	}
-	if (InfiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
+	if (HasDurationArrayGameplayEffectClass.Num() != 0)
 	{
-		ApplyEffectToTarget(TargetActor, EffectClass);
+		for (TSubclassOf<UGameplayEffect> EffectClass : HasDurationArrayGameplayEffectClass)
+		{
+			if (!IsValid(EffectClass)) return;
+			if (HasDurationEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
+			{
+				ApplyEffectToTarget(TargetActor, EffectClass);
+			}
+		}
 	}
+	
+	if (InfiniteArrayGameplayEffectClass.Num() != 0)
+	{
+		for (TSubclassOf<UGameplayEffect> EffectClass : InfiniteArrayGameplayEffectClass)
+		{
+			if (!IsValid(EffectClass)) return;
+			if (InfiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap)
+			{
+				ApplyEffectToTarget(TargetActor, EffectClass);
+			}
+		}
+		
 	if (InfiniteEffectRemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap)
 	{
 		TObjectPtr<UAbilitySystemComponent> TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
@@ -103,6 +136,6 @@ void AAuraEffectActor::OnEndOverlap(AActor* TargetActor)
 			ActiveEffectHandles.FindAndRemoveChecked(Handle);
 		}
 	}
-	}
+	} 
 }
 

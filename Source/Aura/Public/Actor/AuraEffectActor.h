@@ -54,7 +54,14 @@ protected:
 	//TArray of each duration type => Applying an array of effect
 	//Becareful to handle the removing
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects")
-	TArray<TSubclassOf<UGameplayEffect>> ArrayGameplayEffectClass;
+	TArray<TSubclassOf<UGameplayEffect>> InstantArrayGameplayEffectClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects")
+	TArray<TSubclassOf<UGameplayEffect>> HasDurationArrayGameplayEffectClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects")
+	TArray<TSubclassOf<UGameplayEffect>> InfiniteArrayGameplayEffectClass;
+
 	
 	//Instant
 	UPROPERTY(BlueprintReadOnly, Category = "Applied Effects")
@@ -81,7 +88,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Applied Effects")
 	EEffectRemovalPolicy InfiniteEffectRemovalPolicy = EEffectRemovalPolicy::RemoveOnEndOverlap;
 	
-	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveEffectHandles;
+	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveEffectHandles; // Associating Effects to ASC
 
 private:
 
