@@ -24,4 +24,8 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Cursor Outine");
 	int32 CustomDepthRed = 255;
+
+private:
+	virtual void InitAbilityActorInfo() override;
+	
 };
