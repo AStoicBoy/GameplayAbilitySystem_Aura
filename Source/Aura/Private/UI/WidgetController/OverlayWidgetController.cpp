@@ -34,12 +34,12 @@ Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLa
 			// Determine if this tag matches TagToCheck, expanding out parent tags
 			//"A.1".MatchesTag("A") will return True, "A".MatchesTag("A.1") will return False
 			// For example: Message.HealthPotion "Message.HealthPotion".MatchesTag("Message") will return True, "Message".MatchesTag("Message.HealthPotion") will return False
-
 			FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
 			if (Tag.MatchesTag(MessageTag))
 			{
 				const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable,Tag);
 				MessageWidgetRowDelegate.Broadcast(*Row);
+				
 			}
 			
 	
