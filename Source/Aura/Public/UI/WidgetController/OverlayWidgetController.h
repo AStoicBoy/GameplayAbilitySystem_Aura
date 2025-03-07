@@ -15,7 +15,6 @@ struct FUIWidgetRow : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FGameplayTag MessageTag = FGameplayTag();
-
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FText Message = FText();
@@ -33,7 +32,6 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnManaChangedSignature, float, NewM
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxManaChangedSignature, float, NewMaxMana);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMessageSignature, FUIWidgetRow, Message);
-
 
 
 /**
@@ -81,8 +79,33 @@ protected:
 
 };
 
-template <typename T>
-T* UOverlayWidgetController::GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag)
-{
-	return DataTable->FindRow<T>(Tag.GetTagName(),TEXT(""));
-}
+	template <typename T>
+	T* UOverlayWidgetController::GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag)
+	{
+		if (!DataTable)
+		{
+			UE_LOG(LogTemp, Error, TEXT("DataTable is nullptr in GetDataTableRowByTag"));
+			return nullptr;
+		}
+
+		TArray<FName> RowNames = DataTable->GetRowNames();
+		int32 FoundCount = 0;
+		T* FoundRow = nullptr;
+
+		for (const FName& RowName : RowNames)
+		{
+			T* Row = DataTable->FindRow<T>(RowName, TEXT("Checking duplicates"));
+			if (Row && Row->MessageTag.MatchesTag(Tag))  // <-- Correctly checking against MessageTag
+			{
+				FoundCount++;
+				FoundRow = Row;
+			}
+		}
+
+		if (FoundCount > 1)
+		{
+			UE_LOG(LogTemp, Error, TEXT("Duplicate GameplayTag '%s' found %d times in DataTable!"), *Tag.ToString(), FoundCount);
+		}
+
+		return FoundRow;
+	}

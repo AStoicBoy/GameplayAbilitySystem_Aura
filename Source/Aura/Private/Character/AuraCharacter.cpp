@@ -59,7 +59,7 @@ void AAuraCharacter::InitAbilityActorInfo()
 	{
 		if (TObjectPtr<AAuraHUD> AuraHUD = Cast<AAuraHUD>(AuraPlayerController->GetHUD()))
 		{
-			AuraHUD->InitiOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
+			AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
 }
