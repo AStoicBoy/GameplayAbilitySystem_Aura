@@ -28,31 +28,8 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetManaAttribute()).AddUObject(this, &UOverlayWidgetController::ManaChanged);
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetMaxManaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxManaChanged);
 	
-	if (UAuraAbilitySystemComponent* AuraASC = Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent))
-	{
-		AuraASC->EffectAssetTags.Clear();
-		if (!AuraASC->EffectAssetTags.IsBound())
-		{
-			AuraASC->EffectAssetTags.AddLambda(
-			   [this](const FGameplayTagContainer& AssetTags)
-			   {
-				   for (const FGameplayTag& Tag : AssetTags)
-				   {
-					   FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
-					   UE_LOG(LogTemp, Warning, TEXT("Delegate has %d bindings"), MessageWidgetRowDelegate.GetAllObjects().Num());
 
-					   if (Tag.MatchesTag(MessageTag))
-					   {
-						   const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
-						   MessageWidgetRowDelegate.Broadcast(*Row);
-					   }
-				   }
-			   }
-			   );
-		}
-	}
-}
-	/*if (!Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.IsBound())
+	if (!Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.IsBound())
 	{
 		Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
 	[this](const FGameplayTagContainer& AssetTags)
@@ -64,8 +41,8 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 			//"A.1".MatchesTag("A") will return True, "A".MatchesTag("A.1") will return False
 			// For example: Message.HealthPotion "Message.HealthPotion".MatchesTag("Message") will return True, "Message".MatchesTag("Message.HealthPotion") will return False
 				FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));
-				UE_LOG(LogTemp, Warning, TEXT("Delegate has %d bindings"), MessageWidgetRowDelegate.GetAllObjects().Num());
-				UE_LOG(LogTemp, Warning, TEXT("Effect Applied in ASC: %s"), *GetNameSafe(this));
+				//UE_LOG(LogTemp, Warning, TEXT("Delegate has %d bindings"), MessageWidgetRowDelegate.GetAllObjects().Num());
+				//UE_LOG(LogTemp, Warning, TEXT("Effect Applied in ASC: %s"), *GetNameSafe(this));
 			
 				if (Tag.MatchesTag(MessageTag))
 				{
@@ -76,7 +53,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	}
 	);
 	}
-}*/
+}
 
 void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const
 {
