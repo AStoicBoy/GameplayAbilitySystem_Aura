@@ -26,10 +26,7 @@ struct FUIWidgetRow : public FTableRowBase
 	UTexture2D* Image = nullptr;
 };
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature, float, NewHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthChangedSignature, float, NewMaxHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnManaChangedSignature, float, NewMana);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxManaChangedSignature, float, NewMaxMana);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMessageSignature, FUIWidgetRow, Message);
 
@@ -48,16 +45,16 @@ public:
 
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
-	FOnHealthChangedSignature OnHealthChanged;
+	FOnAttributeChangedSignature OnHealthChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
-	FOnMaxHealthChangedSignature OnMaxHealthChanged;
+	FOnAttributeChangedSignature OnMaxHealthChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
-	FOnManaChangedSignature OnManaChanged;
+	FOnAttributeChangedSignature OnManaChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Attributes")
-	FOnMaxManaChangedSignature OnMaxManaChanged;
+	FOnAttributeChangedSignature OnMaxManaChanged;
 
 	UPROPERTY(BlueprintAssignable, Category = "GAS|Message")
 	FOnMessageSignature MessageWidgetRowDelegate;
@@ -68,11 +65,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Widget Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
 	
-	void HealthChanged(const FOnAttributeChangeData& Data) const;
-	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
-	void ManaChanged(const FOnAttributeChangeData& Data) const;
-	void MaxManaChanged(const FOnAttributeChangeData& Data) const;
-
 	template<typename T>
 	T* GetDataTableRowByTag(UDataTable* Datatable, const FGameplayTag& Tag);
 	
@@ -82,30 +74,5 @@ protected:
 	template <typename T>
 	T* UOverlayWidgetController::GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag)
 	{
-		if (!DataTable)
-		{
-			UE_LOG(LogTemp, Error, TEXT("DataTable is nullptr in GetDataTableRowByTag"));
-			return nullptr;
-		}
-
-		TArray<FName> RowNames = DataTable->GetRowNames();
-		int32 FoundCount = 0;
-		T* FoundRow = nullptr;
-
-		for (const FName& RowName : RowNames)
-		{
-			T* Row = DataTable->FindRow<T>(RowName, TEXT("Checking duplicates"));
-			if (Row && Row->MessageTag.MatchesTag(Tag))  // <-- Correctly checking against MessageTag
-			{
-				FoundCount++;
-				FoundRow = Row;
-			}
-		}
-
-		if (FoundCount > 1)
-		{
-			UE_LOG(LogTemp, Error, TEXT("Duplicate GameplayTag '%s' found %d times in DataTable!"), *Tag.ToString(), FoundCount);
-		}
-
-		return FoundRow;
+		return DataTable->FindRow<T>(Tag.GetTagName(), TEXT(""));
 	}
