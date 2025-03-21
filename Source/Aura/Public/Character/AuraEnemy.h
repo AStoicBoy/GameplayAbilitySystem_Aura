@@ -25,7 +25,19 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Cursor Outine");
 	int32 CustomDepthRed = 255;
 
-private:
+	//Combat Interface
+	virtual int32 GetPlayerLevel() override; // This is a getter
+	
+protected:
+
 	virtual void InitAbilityActorInfo() override;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults");
+	int32 Level = 1;
+	
+private:
+	
+	
+	
+
 	
 };
