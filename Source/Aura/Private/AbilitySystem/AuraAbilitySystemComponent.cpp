@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 
+#include "AuraGameplayTags.h"
 #include "InterchangeResult.h"
 
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
@@ -11,7 +12,9 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 	{
 		EffectAssetTags.Clear();
 		OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::EffectApplied);
-		UE_LOG(LogTemp, Warning, TEXT("AbilityActorInfoSet() called in %s"), *GetNameSafe(this));
+		const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+		// GameplayTags.Attribute_Secondary_Armor.ToString();
+		// GEngine->AddOnScreenDebugMessage(-1,10.f,FColor::Orange, FString::Printf(TEXT("Tag: %s"), *GameplayTags.Attribute_Secondary_Armor.ToString()));
 	}
 }
 
