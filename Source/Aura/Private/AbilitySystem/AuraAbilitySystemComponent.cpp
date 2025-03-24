@@ -8,14 +8,8 @@
 
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 {
-	if (!EffectAssetTags.IsBound())
-	{
-		EffectAssetTags.Clear();
 		OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::EffectApplied);
-		const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
-		// GameplayTags.Attribute_Secondary_Armor.ToString();
-		// GEngine->AddOnScreenDebugMessage(-1,10.f,FColor::Orange, FString::Printf(TEXT("Tag: %s"), *GameplayTags.Attribute_Secondary_Armor.ToString()));
-	}
+		//const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 }
 
 void UAuraAbilitySystemComponent::EffectApplied(
