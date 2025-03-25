@@ -24,7 +24,7 @@ UAttributeMenuWidgetController* AAuraHUD::GetAttributeMenuWidgetController(const
 {
 	if (AttributeMenuWidgetController == nullptr)
 	{
-		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(this, AttributeMenuWidgetClass);
+		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(this, AttributeMenuWidgetControllerClass);
 		AttributeMenuWidgetController->SetWidgetControllerParams(WCParams);
 		AttributeMenuWidgetController->BindCallbacksToDependencies();
 
@@ -54,21 +54,5 @@ void AAuraHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 
 		Widget->AddToViewport();
 	}
-
-	if (!AttributeMenuWidget)
-	{
-		UUserWidget* Widget = CreateWidget<UUserWidget>(GetWorld(), AttributeMenuWidgetClass);
-		AttributeMenuWidget = Cast<UAuraUserWidget>(Widget);
-
-		const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
-		TObjectPtr<UAttributeMenuWidgetController> WidgetController = GetAttributeMenuWidgetController(WidgetControllerParams);
-
-		AttributeMenuWidget->SetWidgetController(WidgetController);
-
-		WidgetController->BroadcastInitialValues();
-
-		Widget->AddToViewport();
-	}
-
 
 }
