@@ -17,6 +17,7 @@ struct FAuraGameplayTags
 	static const FAuraGameplayTags& Get() { return GameplayTags; }
 	static void InitializeNativeGameplayTags();
 
+	
 	// Vital Attributes
 	FGameplayTag Attributes_Vital_Health;
 	FGameplayTag Attributes_Vital_Mana;
