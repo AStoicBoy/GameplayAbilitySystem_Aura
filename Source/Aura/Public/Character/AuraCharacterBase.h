@@ -7,7 +7,7 @@
 
 #include "AuraCharacterBase.generated.h"
 
-class UAbilitySystemComponent; class UAttributeSet; class UGameplayEffect;
+class UAbilitySystemComponent; class UAttributeSet; class UGameplayEffect; class UGameplayAbility;
 
 UCLASS(Abstract)
 class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
@@ -23,6 +23,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	void AddCharacterAbilities();
 
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
@@ -41,11 +42,15 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> HealthManaInitializer;
-
+	
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const;
 	void InitializeDefaultAttributes() const;
+	
+	bool bAbilitiesGiven = false;
 
 private:	
+	UPROPERTY(EditAnywhere, Category = "Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 
 
 };
