@@ -30,6 +30,7 @@ public:
 private:
 
 	virtual void InitAbilityActorInfo() override;
+	bool bAbilityActorInfoInitialized = false;
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	UCameraComponent* Camera;

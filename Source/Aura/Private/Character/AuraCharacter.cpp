@@ -53,6 +53,8 @@ int32 AAuraCharacter::GetPlayerLevel()
 
 void AAuraCharacter::InitAbilityActorInfo()
 {
+	if (bAbilityActorInfoInitialized) return;
+	bAbilityActorInfoInitialized = true;
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
 	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(AuraPlayerState, this);
@@ -69,5 +71,10 @@ void AAuraCharacter::InitAbilityActorInfo()
 			AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-	InitializeDefaultAttributes();
+	if (HasAuthority())
+	{
+		InitializeDefaultAttributes();
+	}
+	UE_LOG(LogTemp, Warning, TEXT("InitAbilityActorInfo called on %s | Role: %s"), *GetName(), *UEnum::GetValueAsString(GetLocalRole()));
+
 }
