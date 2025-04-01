@@ -39,7 +39,8 @@ private:
 
 	TScriptInterface<IEnemyInterface> LastActor; // Wrapper for interface (instead of declaring IEnemyInterface*)
 	TScriptInterface<IEnemyInterface> ThisActor;
-
+	FHitResult CursorHit;
+	
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
@@ -62,4 +63,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> Spline = nullptr;
+
+	void AutoRun();
 };

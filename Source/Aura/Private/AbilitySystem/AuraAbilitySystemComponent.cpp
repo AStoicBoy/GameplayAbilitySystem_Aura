@@ -9,8 +9,7 @@
 
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 {
-		OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::EffectApplied);
-		//const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+		OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::ClientEffectApplied);
 }
 
 void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)
@@ -54,7 +53,7 @@ void UAuraAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& In
 	}
 }
 
-void UAuraAbilitySystemComponent::EffectApplied(
+void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation(
 	UAbilitySystemComponent* AbilitySystemComponent, 
 	const FGameplayEffectSpec& EffectSpec, 
 	FActiveGameplayEffectHandle ActiveEffectHandle)

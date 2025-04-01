@@ -54,10 +54,10 @@ int32 AAuraCharacter::GetPlayerLevel()
 
 void AAuraCharacter::InitAbilityActorInfo()
 {
-	if (bAbilityActorInfoInitialized) return;
-	bAbilityActorInfoInitialized = true;
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
+	if (bAbilityActorInfoInitialized) return;
+	bAbilityActorInfoInitialized = true;
 	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(AuraPlayerState, this);
 	Cast<UAuraAbilitySystemComponent>(AuraPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
 	
