@@ -8,7 +8,7 @@
 #include "AuraCharacter.generated.h"
 
 
-
+class AAuraPlayerState;
 class UCameraComponent; class USpringArmComponent;
 	
 /**
@@ -37,5 +37,8 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	USpringArmComponent* SpringArm;
+
+	UPROPERTY()
+	AAuraPlayerState* AuraPlayerState;
 
 };

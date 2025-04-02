@@ -35,6 +35,7 @@ AAuraCharacter::AAuraCharacter()
 void AAuraCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
+	AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	// Init Ability Actor info for the server
 	InitAbilityActorInfo();
 	AddCharacterAbilities();
@@ -42,21 +43,22 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 void AAuraCharacter::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
+	AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	InitAbilityActorInfo();
 }
 
 int32 AAuraCharacter::GetPlayerLevel()
 {
-	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	//const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
 	return AuraPlayerState->GetPlayerLevel();
 }
 
 void AAuraCharacter::InitAbilityActorInfo()
 {
-	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	//const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
-	if (bAbilityActorInfoInitialized) return;
+	
 	bAbilityActorInfoInitialized = true;
 	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(AuraPlayerState, this);
 	Cast<UAuraAbilitySystemComponent>(AuraPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
@@ -64,14 +66,17 @@ void AAuraCharacter::InitAbilityActorInfo()
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
 	AttributeSet = AuraPlayerState->GetAttributeSet();
 
-
-	if (TObjectPtr<AAuraPlayerController> AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
+	if (IsLocallyControlled())
 	{
-		if (TObjectPtr<AAuraHUD> AuraHUD = Cast<AAuraHUD>(AuraPlayerController->GetHUD()))
+		if (TObjectPtr<AAuraPlayerController> AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
 		{
-			AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
+			if (TObjectPtr<AAuraHUD> AuraHUD = Cast<AAuraHUD>(AuraPlayerController->GetHUD()))
+			{
+				AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
+			}
 		}
 	}
+	
 	if (HasAuthority())
 	{
 		InitializeDefaultAttributes();

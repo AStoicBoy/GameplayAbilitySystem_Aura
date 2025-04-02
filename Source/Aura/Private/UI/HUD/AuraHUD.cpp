@@ -40,9 +40,9 @@ void AAuraHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 	checkf(AttributeMenuWidgetClass, TEXT("Please Fill Attribute Menu Class"))
 	checkf(AttributeMenuWidgetControllerClass, TEXT("Please Fill Attribute Controller Menu Class"))
 
-	if (!OverlayWidget)
+	if (!OverlayWidget && PC->IsLocalController())
 	{
-		UUserWidget* Widget = CreateWidget<UUserWidget>(GetWorld(), OverlayWidgetClass);
+		UUserWidget* Widget = CreateWidget<UUserWidget>(PC, OverlayWidgetClass);
 		OverlayWidget = Cast<UAuraUserWidget>(Widget);
 
 		const FWidgetControllerParams WidgetControllerParams(PC, PS, ASC, AS);
