@@ -38,7 +38,13 @@ private:
 	TObjectPtr<UInputMappingContext> AuraContext;
 	UPROPERTY(EditAnywhere, Category ="Input")
 	TObjectPtr<UInputAction> MoveAction;
+	UPROPERTY(EditAnywhere, Category ="Input")
+	TObjectPtr<UInputAction> SpaceAction;
 
+	void SpacePressed() {bSpaceKeyDown = true;};
+	void SpaceReleased(){bSpaceKeyDown = false;};
+	bool bSpaceKeyDown = false;
+	
 	TScriptInterface<IEnemyInterface> LastActor; // Wrapper for interface (instead of declaring IEnemyInterface*)
 	TScriptInterface<IEnemyInterface> ThisActor;
 	FHitResult CursorHit;
