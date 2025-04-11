@@ -7,7 +7,7 @@
 #include "Interaction/CombatInterface.h"
 #include "AuraProjectileSpell.generated.h"
 
-class AAuraProjectile;
+class AAuraProjectile; class UGameplayEffect;
 
 /**
  * 
@@ -16,7 +16,6 @@ UCLASS()
 class AURA_API UAuraProjectileSpell : public UAuraGameplayAbility, public ICombatInterface
 {
 	GENERATED_BODY()
-
 
 protected:
 
@@ -27,4 +26,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void SpawnProjectile(const FVector& ProjectileTargetLocation);
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UGameplayEffect> DamageEffectClass;
+
+
 };
