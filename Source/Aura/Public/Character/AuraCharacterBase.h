@@ -49,7 +49,7 @@ protected:
 	TSubclassOf<UGameplayEffect> HealthManaInitializer;
 	
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const;
-	void InitializeDefaultAttributes() const;
+	virtual void InitializeDefaultAttributes() const;
 	
 	bool bAbilitiesGiven = false;
 
