@@ -21,6 +21,13 @@ public:
 	
 	virtual void InitAbilityActorInfo();
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
+	virtual void Die() override;
+	
+	UFUNCTION(NetMulticast, reliable)
+	virtual void MulticastHandleDeath();
+
+
+	
 protected:
 	virtual void BeginPlay() override;
 	void AddCharacterAbilities();
@@ -55,6 +62,23 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<UAnimMontage> HitReactMontage;
+
+	//Dissolve Effects
+
+	void Dissolve();
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartDissolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartWeaponDissolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UMaterialInstance> DissolveMaterialInstance;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TObjectPtr<UMaterialInstance> WeaponDissolveMaterialInstance;
+	
 
 private:	
 	UPROPERTY(EditAnywhere, Category = "Abilities")

@@ -1,10 +1,9 @@
 // Copyright Dorian Souc
 
 
-#include "AbilitySystem/s/TargetDataUnderMouse.h"
+#include "AbilitySystem/AbilityTasks/TargetDataUnderMouse.h"
 
 #include "AbilitySystemComponent.h"
-#include "Player/AuraPlayerController.h"
 
 UTargetDataUnderMouse* UTargetDataUnderMouse::CreateTargetDataUnderMouse(UGameplayAbility* OwningAbility)
 {

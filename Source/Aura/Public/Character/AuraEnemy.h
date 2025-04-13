@@ -24,6 +24,8 @@ public:
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
 
+	virtual void Die() override;
+		
 	UPROPERTY(EditAnywhere, Category = "Cursor Outine");
 	int32 CustomDepthRed = 255;
 
@@ -42,6 +44,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category="Combat")
 	float BastWalkSpeed = 250.f;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Combat")
+	float LifeSpan = 5.f;
 
 protected:
 
@@ -56,9 +61,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly);
 	TObjectPtr<UWidgetComponent> HealthBar;
 
-
-
-	
 private:
 	
 	
