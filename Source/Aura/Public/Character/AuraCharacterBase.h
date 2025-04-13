@@ -7,7 +7,7 @@
 
 #include "AuraCharacterBase.generated.h"
 
-class UAbilitySystemComponent; class UAttributeSet; class UGameplayEffect; class UGameplayAbility;
+class UAbilitySystemComponent; class UAttributeSet; class UGameplayEffect; class UGameplayAbility; class UAnimMontage;
 
 UCLASS(Abstract)
 class AURA_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
@@ -20,7 +20,7 @@ public:
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 	
 	virtual void InitAbilityActorInfo();
-
+	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 protected:
 	virtual void BeginPlay() override;
 	void AddCharacterAbilities();
@@ -52,6 +52,9 @@ protected:
 	virtual void InitializeDefaultAttributes() const;
 	
 	bool bAbilitiesGiven = false;
+	
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TObjectPtr<UAnimMontage> HitReactMontage;
 
 private:	
 	UPROPERTY(EditAnywhere, Category = "Abilities")
