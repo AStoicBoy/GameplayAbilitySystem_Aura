@@ -7,12 +7,15 @@
 #include "AuraGameplayTags.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameplayTagContainer.h"
+#include "MovieSceneTracksComponentTypes.h"
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Components/SplineComponent.h"
+#include "GameFramework/Character.h"
 #include "Input/AuraInputComponent.h"
 #include "Interaction/EnemyInterface.h"
+#include "UI/Widget/DamageTextComponent.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -62,6 +65,19 @@ void AAuraPlayerController::CursorTrace()
 	}
 }
 
+void AAuraPlayerController::ShowDamageNumber_Implementation(float DamageAmout,ACharacter* TargetCharacter)
+{
+	if (IsValid(TargetCharacter) && DamageTextComponentClass)
+	{
+	 	UDamageTextComponent *DamageText = NewObject<UDamageTextComponent>(TargetCharacter,DamageTextComponentClass);
+		DamageText->RegisterComponent();
+		DamageText->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+		
+		DamageText->SetRelativeLocation(FVector(0.f, 0.f, 60.f));
+		DamageText->SetDamageText(DamageAmout);
+	}
+}
+
 void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
 	if (InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
@@ -80,7 +96,7 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
 	if (!bTargeting && !bSpaceKeyDown)
 	{
-		const APawn* ControllerPawn = GetPawn();
+		//const APawn* ControllerPawn = GetPawn();
 		if (FollowTime <= ShortPressThreshold && GetPawn())
 		{
 			FHitResult Hit;
