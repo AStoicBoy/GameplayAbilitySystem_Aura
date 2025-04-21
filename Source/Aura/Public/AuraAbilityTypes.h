@@ -17,12 +17,26 @@ public:
 	
 	virtual UScriptStruct* GetScriptStruct() const
 	{
-		return FGameplayEffectContext::StaticStruct();
+		return StaticStruct();
+	}
+	
+	/** Creates a copy of this context, used to duplicate for later modifications */
+	virtual FAuraGameplayEffectContect* Duplicate() const
+	{
+		FAuraGameplayEffectContect* NewContext = new FAuraGameplayEffectContect();
+		*NewContext = *this;
+		if (GetHitResult())
+		{
+			// Does a deep copy of the hit result
+			NewContext->AddHitResult(*GetHitResult(), true);
+		}
+		return NewContext;
 	}
 	
 	/** Custom serializer, handles polymorphism of context */
 	bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess);
 
+	
 protected:
 
 	UPROPERTY()
@@ -33,4 +47,12 @@ protected:
 	
 };
 
-
+template<>
+struct TStructOpsTypeTraitsBase2<FAuraGameplayEffectContect> : public TStructOpsTypeTraitsBase2<FGameplayEffectContext>
+{
+	enum
+	{
+		WithNetSerializer = true,
+		WithCopy = true,
+	};
+};
