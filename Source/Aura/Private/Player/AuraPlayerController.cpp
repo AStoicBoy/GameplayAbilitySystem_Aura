@@ -65,7 +65,7 @@ void AAuraPlayerController::CursorTrace()
 	}
 }
 
-void AAuraPlayerController::ShowDamageNumber_Implementation(float DamageAmout,ACharacter* TargetCharacter)
+void AAuraPlayerController::ShowDamageNumber_Implementation(float DamageAmout,ACharacter* TargetCharacter, bool bIsBlockedHit, bool bIsCriticalHit)
 {
 	if (IsValid(TargetCharacter) && DamageTextComponentClass)
 	{
@@ -74,7 +74,7 @@ void AAuraPlayerController::ShowDamageNumber_Implementation(float DamageAmout,AC
 		DamageText->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		
 		DamageText->SetRelativeLocation(FVector(0.f, 0.f, 60.f));
-		DamageText->SetDamageText(DamageAmout);
+		DamageText->SetDamageText(DamageAmout, bIsBlockedHit, bIsCriticalHit);
 	}
 }
 

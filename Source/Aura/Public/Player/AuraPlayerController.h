@@ -25,7 +25,7 @@ public:
 	void CursorTrace();
 	
 	UFUNCTION(Client, Reliable)
-	void ShowDamageNumber(float DamageAmout, ACharacter* TargetCharacter);
+	void ShowDamageNumber(float DamageAmout, ACharacter* TargetCharacter, bool bIsBlockedHit, bool bIsCriticalHit);
 
 protected:
 	virtual void BeginPlay() override;
