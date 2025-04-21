@@ -22,6 +22,7 @@ public:
 	
 	/** Custom serializer, handles polymorphism of context */
 	bool NetSerialize(FArchive& Ar, class UPackageMap* Map, bool& bOutSuccess);
+
 protected:
 
 	UPROPERTY()
