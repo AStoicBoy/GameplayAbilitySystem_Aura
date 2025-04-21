@@ -4,7 +4,7 @@
 #include "AuraAbilityTypes.generated.h"
 
 USTRUCT(BlueprintType)
-struct FAuraGameplayEffectContect : public FGameplayEffectContext
+struct FAuraGameplayEffectContext : public FGameplayEffectContext
 {
 	GENERATED_BODY()
 
@@ -21,9 +21,9 @@ public:
 	}
 	
 	/** Creates a copy of this context, used to duplicate for later modifications */
-	virtual FAuraGameplayEffectContect* Duplicate() const
+	virtual FAuraGameplayEffectContext* Duplicate() const
 	{
-		FAuraGameplayEffectContect* NewContext = new FAuraGameplayEffectContect();
+		FAuraGameplayEffectContext* NewContext = new FAuraGameplayEffectContext();
 		*NewContext = *this;
 		if (GetHitResult())
 		{
@@ -48,7 +48,7 @@ protected:
 };
 
 template<>
-struct TStructOpsTypeTraitsBase2<FAuraGameplayEffectContect> : public TStructOpsTypeTraitsBase2<FGameplayEffectContext>
+struct TStructOpsTypeTraitsBase2<FAuraGameplayEffectContext> : public TStructOpsTypeTraitsBase2<FGameplayEffectContext>
 {
 	enum
 	{
